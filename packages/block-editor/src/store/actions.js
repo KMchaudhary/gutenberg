@@ -10,6 +10,7 @@ import {
 	getBlockType,
 	getDefaultBlockName,
 	hasBlockSupport,
+	loadBlockType,
 	switchToBlockType,
 	synchronizeBlocksWithTemplate,
 	getBlockSupport,
@@ -1355,13 +1356,14 @@ export function selectionChange(
  */
 export const insertDefaultBlock =
 	( attributes, rootClientId, index ) =>
-	( { dispatch } ) => {
+	async ( { dispatch } ) => {
 		// Abort if there is no default block type (if it has been unregistered).
 		const defaultBlockName = getDefaultBlockName();
 		if ( ! defaultBlockName ) {
 			return;
 		}
 
+		await loadBlockType( defaultBlockName );
 		const block = createBlock( defaultBlockName, attributes );
 
 		return dispatch.insertBlock( block, index, rootClientId );
