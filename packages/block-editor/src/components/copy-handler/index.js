@@ -228,7 +228,7 @@ export function useClipboardHandler() {
 						}, [] )
 						.flat();
 				} else {
-					blocks = pasteHandler( {
+					blocks = await pasteHandler( {
 						HTML: html,
 						plainText,
 						mode: 'BLOCKS',
