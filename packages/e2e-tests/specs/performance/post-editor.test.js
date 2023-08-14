@@ -54,10 +54,9 @@ async function loadHtmlIntoTheBlockEditor( html ) {
 }
 
 async function load1000Paragraphs() {
-	await page.evaluate( async () => {
-		const { loadBlockType, createBlock } = window.wp.blocks;
+	await page.evaluate( () => {
+		const { createBlock } = window.wp.blocks;
 		const { dispatch } = window.wp.data;
-		await loadBlockType?.( 'core/paragraph' );
 		const blocks = Array.from( { length: 1000 } ).map( () =>
 			createBlock( 'core/paragraph' )
 		);

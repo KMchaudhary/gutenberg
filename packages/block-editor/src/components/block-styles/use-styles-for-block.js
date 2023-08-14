@@ -8,7 +8,7 @@ import {
 	getBlockFromExample,
 	store as blocksStore,
 } from '@wordpress/blocks';
-import { useEffect, useState } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -23,19 +23,14 @@ import { store as blockEditorStore } from '../../store';
  * @return {WPBlock}          A generic block ready for styles preview.
  */
 function useGenericPreviewBlock( block, type ) {
-	const [ example, setExample ] = useState( null );
-	useEffect( () => {
+	return useMemo( () => {
 		if ( type && type.blockName && type.example ) {
-			getBlockFromExample( type.blockName, type.example ).then(
-				setExample
-			);
+			return getBlockFromExample( type.blockName, type.example );
 		}
 		if ( block ) {
-			setExample( cloneBlock( block ) );
+			return cloneBlock( block );
 		}
 	}, [ type, type?.example ? block?.name : block ] );
-
-	return example;
 }
 
 /**

@@ -520,6 +520,10 @@ export function getBlockType( name ) {
 	return select( blocksStore ).getBlockType( name );
 }
 
+export function getBootstrappedBlockType( name ) {
+	return select( blocksStore ).getBootstrappedBlockType( name );
+}
+
 export function loadBlockType( name ) {
 	return resolveSelect( blocksStore ).getBlockType( name );
 }

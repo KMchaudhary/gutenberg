@@ -131,10 +131,10 @@ function createBlockCompleter() {
 						? await parse( content, {
 								__unstableSkipMigrationLogs: true,
 						  } )
-						: await createBlock(
+						: createBlock(
 								name,
 								initialAttributes,
-								await createBlocksFromInnerBlocksTemplate(
+								createBlocksFromInnerBlocksTemplate(
 									innerBlocks
 								)
 						  ),

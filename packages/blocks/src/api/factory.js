@@ -589,16 +589,13 @@ export async function switchToBlockType( blocks, name ) {
  *
  * @return {Object} block.
  */
-export const getBlockFromExample = async ( name, example ) => {
+export function getBlockFromExample( name, example ) {
 	let innerBlocks = [];
 	if ( example.innerBlocks ) {
-		innerBlocks = await Promise.all(
-			example.innerBlocks.map( ( innerBlock ) =>
-				getBlockFromExample( innerBlock.name, innerBlock )
-			)
+		innerBlocks = example.innerBlocks.map( ( innerBlock ) =>
+			getBlockFromExample( innerBlock.name, innerBlock )
 		);
 	}
 
-	await loadBlockType( name );
 	return createBlock( name, example.attributes, innerBlocks );
-};
+}

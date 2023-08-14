@@ -46,7 +46,7 @@ const useBlockTypesState = ( rootClientId, onInsert ) => {
 					? await parse( item.content, {
 							__unstableSkipMigrationLogs: true,
 					  } )
-					: await createBlock(
+					: createBlock(
 							item.name,
 							item.initialAttributes,
 							createBlocksFromInnerBlocksTemplate(
