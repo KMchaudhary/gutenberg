@@ -17,6 +17,10 @@
 
 -   `ProgressBar`: Add transition to determinate indicator ([#53877](https://github.com/WordPress/gutenberg/pull/53877)).
 
+### Internal
+
+-   Update `@floating-ui/react-dom` to the latest version ([#46845](https://github.com/WordPress/gutenberg/pull/46845)).
+
 ## 25.6.0 (2023-08-16)
 
 ### Enhancements
