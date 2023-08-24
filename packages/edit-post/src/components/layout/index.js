@@ -266,7 +266,7 @@ function Layout() {
 			<EditPostKeyboardShortcuts />
 			<EditorKeyboardShortcutsRegister />
 			<EditorKeyboardShortcuts />
-			<SettingsSidebar />
+
 			<InterfaceSkeleton
 				isDistractionFree={ isDistractionFree && isLargeViewport }
 				className={ className }
@@ -359,6 +359,7 @@ function Layout() {
 			<StartPageOptions />
 			<Popover.Slot />
 			<PluginArea onError={ onPluginAreaError } />
+			<SettingsSidebar />
 		</>
 	);
 }
