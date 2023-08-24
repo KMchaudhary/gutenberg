@@ -216,3 +216,11 @@ export { default as withSpokenMessages } from './higher-order/with-spoken-messag
 
 // Private APIs.
 export { privateApis } from './private-apis';
+
+export {
+	DataTable,
+	DataTableRows,
+	DataTableTextFilter,
+	DataTableGlobalSearchInput,
+	DataTablePagination,
+} from './datatable';

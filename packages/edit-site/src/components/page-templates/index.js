@@ -6,8 +6,13 @@ import {
 	__experimentalHeading as Heading,
 	__experimentalText as Text,
 	__experimentalVStack as VStack,
+	DataTableRows,
+	DataTableGlobalSearchInput,
+	DataTable,
+	DataTablePagination,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { useMemo } from '@wordpress/element';
 import { useEntityRecords } from '@wordpress/core-data';
 import { decodeEntities } from '@wordpress/html-entities';
 
@@ -15,7 +20,6 @@ import { decodeEntities } from '@wordpress/html-entities';
  * Internal dependencies
  */
 import Page from '../page';
-import Table from '../table';
 import Link from '../routes/link';
 import AddedBy from '../list/added-by';
 import TemplateActions from '../template-actions';
@@ -29,50 +33,68 @@ export default function PageTemplates() {
 			per_page: -1,
 		}
 	);
-
-	const columns = [
-		{
-			header: __( 'Template' ),
-			cell: ( template ) => (
-				<VStack>
-					<Heading as="h3" level={ 5 }>
-						<Link
-							params={ {
-								postId: template.id,
-								postType: template.type,
-								canvas: 'edit',
-							} }
-						>
-							{ decodeEntities(
-								template.title?.rendered || template.slug
+	const columns = useMemo(
+		() => [
+			{
+				header: __( 'Template' ),
+				id: 'title',
+				accessorFn: ( template ) =>
+					template.title?.rendered || template.slug,
+				cell: ( props ) => {
+					const template = props.row.original;
+					return (
+						<VStack>
+							<Heading as="h3" level={ 5 }>
+								<Link
+									params={ {
+										postId: template.id,
+										postType: template.type,
+										canvas: 'edit',
+									} }
+								>
+									{ decodeEntities( props.getValue() ) }
+								</Link>
+							</Heading>
+							{ template.description && (
+								<Text variant="muted">
+									{ decodeEntities( template.description ) }
+								</Text>
 							) }
-						</Link>
-					</Heading>
-					{ template.description && (
-						<Text variant="muted">
-							{ decodeEntities( template.description ) }
-						</Text>
-					) }
-				</VStack>
-			),
-			maxWidth: 400,
-		},
-		{
-			header: __( 'Added by' ),
-			cell: ( template ) => (
-				<AddedBy postType={ template.type } postId={ template.id } />
-			),
-		},
-		{
-			header: <VisuallyHidden>{ __( 'Actions' ) }</VisuallyHidden>,
-			cell: ( template ) => (
-				<TemplateActions
-					postType={ template.type }
-					postId={ template.id }
-				/>
-			),
-		},
-	];
+						</VStack>
+					);
+				},
+				maxSize: 400,
+				sortingFn: 'alphanumeric',
+			},
+			{
+				header: __( 'Added by' ),
+				id: 'addedBy',
+				cell: ( props ) => {
+					const template = props.row.original;
+					return (
+						<AddedBy
+							postType={ template.type }
+							postId={ template.id }
+						/>
+					);
+				},
+			},
+			{
+				header: <VisuallyHidden>{ __( 'Actions' ) }</VisuallyHidden>,
+				id: 'actions',
+				cell: ( props ) => {
+					const template = props.row.original;
+					return (
+						<TemplateActions
+							postType={ template.type }
+							postId={ template.id }
+						/>
+					);
+				},
+			},
+		],
+		[]
+	);
 
 	return (
 		<Page
@@ -85,7 +107,25 @@ export default function PageTemplates() {
 				/>
 			}
 		>
-			{ templates && <Table data={ templates } columns={ columns } /> }
+			{ templates && (
+				<div className="edit-site-table-wrapper">
+					<DataTable
+						data={ templates }
+						columns={ columns }
+						options={ {
+							initialState: {
+								pagination: { pageSize: 5 },
+							},
+						} }
+					>
+						<VStack>
+							<DataTableGlobalSearchInput />
+							<DataTableRows className="edit-site-table" />
+							<DataTablePagination />
+						</VStack>
+					</DataTable>
+				</div>
+			) }
 		</Page>
 	);
 }
